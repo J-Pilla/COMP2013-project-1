@@ -1,9 +1,12 @@
 import "./App.css";
+import ProductsContainer from "./components/ProductsContainer";
 
 // Jason Pilla
 
 function App() {
-  return <>{/* Add your code here! */}</>;
+  return <>
+  <ProductsContainer />
+  </>;
 }
 
 export default App;
