@@ -1,11 +1,11 @@
 import "./App.css";
-import ProductsContainer from "./components/ProductsContainer";
+import GrociariesAppContainer from "./components/GrociariesAppContainer";
 
 // Jason Pilla
 
 function App() {
   return <>
-  <ProductsContainer />
+  <GrociariesAppContainer />
   </>;
 }
 
