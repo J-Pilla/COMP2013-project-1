@@ -6,5 +6,5 @@ export default function ProductsContainer() {
       {products.map((product, index) =>
       <ProductCard key={index} productName={product.productName}
       image={product.image} brand={product.brand} price={product.price}/>)}
-      </div>
+      </div>;
 }

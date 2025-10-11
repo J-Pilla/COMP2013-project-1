@@ -1,5 +1,5 @@
-function GrociariesAppContainer() {
-  return <>{/* Add your code here! */}</>;
-}
+export default function GrociariesAppContainer() {
+  return <div className="GroceriesApp-Container">
 
-export default GrociariesAppContainer;
+  </div>;
+}

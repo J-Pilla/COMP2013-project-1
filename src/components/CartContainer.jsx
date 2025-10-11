@@ -1,5 +1,5 @@
-function CartContainer() {
-  return <>{/* Add your code here! */}</>;
-}
+import products from "../data/products"
 
-export default CartContainer;
+export default function CartContainer() {
+    return <></>;
+}
