@@ -1,17 +1,18 @@
 import QuantityCounter from "./QuantityCounter";
 
-export default function CartCard() {
-  const source = "https://images.openfoodfacts.org/images/products/301/762/042/2003/front_en.550.400.jpg";
+export default function CartCard({productName, image, price, quantity, removeFromCart}) {
+  let total = quantity * price.replace("$", "");
+
   return <div className="CartCard">
     <div className="CartCardInfo">
-    <img src={source} />
-    <p>Yougurt</p>
-    <p>$6.00</p>
-    <QuantityCounter minQuantity={1} initQuantity={3} />
+    <img src={image} />
+    <p>{productName}</p>
+    <p>{price}</p>
+    <QuantityCounter minQuantity={1} initQuantity={quantity} />
     </div>
     <div className="CartCardInfo">
-    <h3>Total: $18.00</h3>
-    <button className="RemoveButton">Remove</button>
+    <h3>Total: ${total.toFixed(2)}</h3>
+    <button className="RemoveButton" onClick={() => removeFromCart()}>Remove</button>
     </div>
   </div>;
 }

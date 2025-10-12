@@ -8,22 +8,23 @@ import ProductsContainer from "./ProductsContainer";
 
 export default function GrociariesAppContainer() {
   const [cartItems, setCartItems] = useState([]);
-  let cartItemsCopy = [...cartItems];
 
   const addToCart = (index, quantity) => {
+    let cartItemsCopy = [...cartItems];
     cartItemsCopy.push([index, quantity]);
     setCartItems(cartItemsCopy);
   }
+
   const removeFromCart = () => {
+    let cartItemsCopy = [...cartItems];
     cartItemsCopy.pop();
     setCartItems(cartItemsCopy);
   }
+
   return <>
   <NavBar hasItems={cartItems.length > 0}/>
   <div className="GroceriesApp-Container">
     <ProductsContainer products={products} addToCart={addToCart}/>
-    <CartContainer products={products} removeFromCart={removeFromCart} />
-    <p>{cartItems[cartItems.length - 1]}</p>
-    <button onClick={() => removeFromCart()}>-</button>
+    <CartContainer products={products} cartItems={cartItems} removeFromCart={removeFromCart} />
   </div></>;
 }

@@ -1,11 +1,13 @@
 import CartCard from "./CartCard";
 
-export default function CartContainer() {
+export default function CartContainer({products, cartItems, removeFromCart}) {
     return <div className="CartContainer">
-        <h3>Cart items: 0</h3>
-        <CartCard />
-        <CartCard />
-        <CartCard />
+        <h3>Cart items: {cartItems.length}</h3>
+              {cartItems.map((cartItem, index) =>
+                <CartCard key={index}
+                {...products[cartItem[0]]}
+                quantity={cartItem[1]}
+                removeFromCart={removeFromCart} />)}
         <div className="CartListBtns">
             <button className="RemoveButton">Empty Cart</button>
             <button id="BuyButton">Checkout: $0:00</button>
