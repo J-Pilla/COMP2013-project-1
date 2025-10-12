@@ -1,8 +1,7 @@
 import { useState } from "react"; 
 
-export default function QuantityCounter({minQuantity = 0, initQuantity = 0}) {
+export default function QuantityCounter({minQuantity = 0, quantity, setQuantity}) {
   const maxQuantity = 99;
-  const [quantity, setQuantity] = useState(initQuantity);
 
   return <div className="ProductQuantityDiv">
     <button onClick={() =>

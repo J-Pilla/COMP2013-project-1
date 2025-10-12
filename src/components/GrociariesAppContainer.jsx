@@ -11,13 +11,25 @@ export default function GrociariesAppContainer() {
 
   const addToCart = (index, quantity) => {
     let cartItemsCopy = [...cartItems];
-    cartItemsCopy.push([index, quantity]);
+
+    let i = 0;
+    for (; i < cartItemsCopy.length; i++) {
+      if (cartItemsCopy[i][0] === index) {
+        cartItemsCopy[i][1] += quantity;
+        break;
+      } }
+
+    if (i == cartItemsCopy.length) {
+      cartItemsCopy.push([index, quantity]);
+    }
+
     setCartItems(cartItemsCopy);
+    console.log(cartItems[0]);
   }
 
-  const removeFromCart = () => {
+  const removeFromCart = (index) => {
     let cartItemsCopy = [...cartItems];
-    cartItemsCopy.pop();
+    cartItemsCopy.splice(index, 1);
     setCartItems(cartItemsCopy);
   }
 
