@@ -33,10 +33,14 @@ export default function GrociariesAppContainer() {
     setCartItems(cartItemsCopy);
   }
 
+  const emptyCart = () => {
+    setCartItems([]);
+  }
+
   return <>
   <NavBar hasItems={cartItems.length > 0}/>
   <div className="GroceriesApp-Container">
     <ProductsContainer products={products} addToCart={addToCart}/>
-    <CartContainer products={products} cartItems={cartItems} removeFromCart={removeFromCart} />
+    <CartContainer products={products} cartItems={cartItems} removeFromCart={removeFromCart} emptyCart={emptyCart} />
   </div></>;
 }
