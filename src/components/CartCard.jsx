@@ -7,7 +7,7 @@ export default function CartCard() {
     <img src={source} />
     <p>Yougurt</p>
     <p>$6.00</p>
-    <QuantityCounter />
+    <QuantityCounter minQuantity={1} initQuantity={3} />
     </div>
     <div className="CartCardInfo">
     <h3>Total: $18.00</h3>
