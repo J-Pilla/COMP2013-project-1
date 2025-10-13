@@ -12,23 +12,21 @@ export default function GrociariesAppContainer() {
   const addToCart = (cartIndex, quantity) => {
     let cartItemsCopy = [...cartItems];
     let totalPrice = quantity * products[cartIndex].price.replace("$", "");
-    let repeatIndex;
+    let repeatIndex = 0;
+    
+    for (;repeatIndex < cartItems.length; repeatIndex++) {
+      if (cartItems[repeatIndex].product.id === products[cartIndex].id) {
+        cartItemsCopy[repeatIndex].quantity += quantity;
+        cartItemsCopy[repeatIndex].totalPrice += totalPrice;
+        break;
+      }
+    }
 
-    cartItems.map((cartItem, index) => {
-      if (cartItem.product.id === products[cartIndex].id)
-        repeatIndex = index;
-    });
-
-    if (repeatIndex === undefined)
+    if (repeatIndex === cartItems.length)
       cartItemsCopy.push({
         product: products[cartIndex],
         quantity: quantity,
         totalPrice: totalPrice});
-    else
-    {
-      cartItemsCopy[repeatIndex].quantity += quantity;
-      cartItemsCopy[repeatIndex].totalPrice += totalPrice;
-    }
     
     setCartItems(cartItemsCopy);
   }
