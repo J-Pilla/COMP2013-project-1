@@ -11,6 +11,7 @@ export default function GrociariesAppContainer() {
 
   const addToCart = (cartIndex, quantity) => {
     let cartItemsCopy = [...cartItems];
+    let totalPrice = quantity * products[cartIndex].price.replace("$", "");
     let repeatIndex;
 
     cartItems.map((cartItem, index) => {
@@ -21,10 +22,21 @@ export default function GrociariesAppContainer() {
     if (repeatIndex === undefined)
       cartItemsCopy.push({
         product: products[cartIndex],
-        quantity: quantity});
+        quantity: quantity,
+        totalPrice: totalPrice});
     else
+    {
       cartItemsCopy[repeatIndex].quantity += quantity;
+      cartItemsCopy[repeatIndex].totalPrice += totalPrice;
+    }
     
+    setCartItems(cartItemsCopy);
+  }
+
+  const setItemQuantity = (index, quantity) => {
+    let cartItemsCopy = [...cartItems];
+    cartItemsCopy[index].quantity += quantity;
+    cartItemsCopy[index].totalPrice += quantity * cartItems[index].product.price.replace("$", "");
     setCartItems(cartItemsCopy);
   }
 
@@ -42,6 +54,6 @@ export default function GrociariesAppContainer() {
   <NavBar hasItems={cartItems.length > 0}/>
   <div className="GroceriesApp-Container">
     <ProductsContainer products={products} addToCart={addToCart}/>
-    <CartContainer cartItems={cartItems} removeFromCart={removeFromCart} emptyCart={emptyCart} useState={useState}/>
+    <CartContainer cartItems={cartItems} setItemQuantity={setItemQuantity} removeFromCart={removeFromCart} emptyCart={emptyCart}/>
   </div></>;
 }

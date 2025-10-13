@@ -2,17 +2,13 @@ import { useState } from "react";
 
 import QuantityCounter from "./QuantityCounter";
 
-export default function CartCard({index, productName, image, price, initQuantity, checkoutPrice, setCheckoutPrice, removeFromCart}) {
-  const [quantity, setQuantity] = useState(0);
-  let totalPrice = (initQuantity + quantity) * price.replace("$", "");
-  // setCheckoutPrice(checkoutPrice + totalPrice);
-
+export default function CartCard({index, productName, image, price, quantity, totalPrice, setItemQuantity, removeFromCart}) {
   return <div className="CartCard">
     <div className="CartCardInfo">
     <img src={image} />
     <p>{productName}</p>
     <p>{price}</p>
-    <QuantityCounter quantity={quantity} setQuantity={setQuantity} initQuantity={initQuantity} minQuantity={1} />
+    <QuantityCounter quantity={quantity} setQuantity={setItemQuantity} minQuantity={1} index={index} />
     </div>
     <div className="CartCardInfo">
     <h3>Total: ${totalPrice.toFixed(2)}</h3>

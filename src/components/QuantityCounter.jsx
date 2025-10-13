@@ -1,13 +1,13 @@
-export default function QuantityCounter({quantity, setQuantity, initQuantity = 0, minQuantity = 0}) {
+export default function QuantityCounter({quantity, setQuantity, minQuantity = 0, index = -1}) {
   const maxQuantity = 99;
 
   return <div className="ProductQuantityDiv">
     <button onClick={() =>
-    quantity + initQuantity > minQuantity &&
-    setQuantity(quantity - 1)}>-</button>
-    <p>{quantity + initQuantity}</p>
+    quantity > minQuantity &&
+    setQuantity(index < 0 ? quantity - 1 : index, -1)}>-</button>
+    <p>{quantity}</p>
     <button onClick={() =>
-    quantity + initQuantity < maxQuantity &&
-    setQuantity(quantity + 1)}>+</button>
+    quantity < maxQuantity &&
+    setQuantity(index < 0 ? quantity + 1 : index, 1)}>+</button>
   </div>;
 }
