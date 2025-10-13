@@ -1,17 +1,26 @@
+import { useState } from "react";
+
 import CartCard from "./CartCard";
 
-export default function CartContainer({products, cartItems, removeFromCart, emptyCart}) {
+export default function CartContainer({cartItems, removeFromCart, emptyCart}) {
+    const [checkoutPrice, setCheckoutPrice] = useState(0);
+
     return <div className="CartContainer">
         <h3>Cart items: {cartItems.length}</h3>
               {cartItems.map((cartItem, index) =>
                 <CartCard key={index}
                 index={index}
-                {...products[cartItem[0]]}
-                initQuantity={cartItem[1]}
+                {...cartItem.product}
+                initQuantity={cartItem.quantity}
+                checkoutPrice={checkoutPrice}
+                setCheckoutPrice={setCheckoutPrice}
                 removeFromCart={removeFromCart} />)}
         <div className="CartListBtns">
-            <button className="RemoveButton" onClick={() => emptyCart()}>Empty Cart</button>
-            <button id="BuyButton">Checkout: $0:00</button>
+            <button className="RemoveButton" onClick={() => {
+                emptyCart();
+                setCheckoutPrice(0);
+                }}>Empty Cart</button>
+            <button id="BuyButton">Checkout: ${checkoutPrice.toFixed(2)}</button>
         </div>
     </div>;
 }

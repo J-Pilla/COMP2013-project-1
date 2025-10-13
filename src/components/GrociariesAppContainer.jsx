@@ -9,22 +9,23 @@ import ProductsContainer from "./ProductsContainer";
 export default function GrociariesAppContainer() {
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = (index, quantity) => {
+  const addToCart = (cartIndex, quantity) => {
     let cartItemsCopy = [...cartItems];
+    let repeatIndex;
 
-    let i = 0;
-    for (; i < cartItemsCopy.length; i++) {
-      if (cartItemsCopy[i][0] === index) {
-        cartItemsCopy[i][1] += quantity;
-        break;
-      } }
+    cartItems.map((cartItem, index) => {
+      if (cartItem.product.id === products[cartIndex].id)
+        repeatIndex = index;
+    });
 
-    if (i == cartItemsCopy.length) {
-      cartItemsCopy.push([index, quantity]);
-    }
-
+    if (repeatIndex === undefined)
+      cartItemsCopy.push({
+        product: products[cartIndex],
+        quantity: quantity});
+    else
+      cartItemsCopy[repeatIndex].quantity += quantity;
+    
     setCartItems(cartItemsCopy);
-    console.log(cartItems[0]);
   }
 
   const removeFromCart = (index) => {
@@ -41,6 +42,6 @@ export default function GrociariesAppContainer() {
   <NavBar hasItems={cartItems.length > 0}/>
   <div className="GroceriesApp-Container">
     <ProductsContainer products={products} addToCart={addToCart}/>
-    <CartContainer products={products} cartItems={cartItems} removeFromCart={removeFromCart} emptyCart={emptyCart} />
+    <CartContainer cartItems={cartItems} removeFromCart={removeFromCart} emptyCart={emptyCart} useState={useState}/>
   </div></>;
 }
