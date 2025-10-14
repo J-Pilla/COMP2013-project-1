@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import CartCard from "./CartCard";
 
 export default function CartContainer({cartItems, setItemQuantity, removeFromCart, emptyCart}) {
