@@ -8,8 +8,7 @@ import ProductsContainer from "./ProductsContainer";
 
 export default function GrociariesAppContainer() {
   /* an array populated by ProcuctCard,
-   * each index contains a product, quantity, and totalPrice,
-   * might remove totalPrice */
+   * each index contains a product, quantity, and totalPrice */
   const [cartItems, setCartItems] = useState([]);
 
   // adds a cartItem via ProductCard
@@ -37,7 +36,8 @@ export default function GrociariesAppContainer() {
   }
 
   /* sets quantity if a repeat cartItem is being added to,
-   * either via ProductCard or the QuantityCounter in CartCard */
+   * either via ProductCard or the QuantityCounter in CartCard,
+   * totalPrice is updated to reflect the quantity */
   const setItemQuantity = (index, quantity) => {
     let cartItemsCopy = [...cartItems];
     cartItemsCopy[index].quantity += quantity;
