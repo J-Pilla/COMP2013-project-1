@@ -1,3 +1,7 @@
+/* I don't know why but this file has 4 space tab, I wish all my files were like this,
+ * and I don't know what I did to make this happen, if you have any insight, please let me know,
+ * also, the only "challenge" I did was add functionality to the checkout button,
+ * because it felt wrong to me that the button gave no feedback */
 import CartCard from "./CartCard";
 
 export default function CartContainer({
@@ -22,7 +26,11 @@ export default function CartContainer({
             <button className="RemoveButton" onClick={
                 () => emptyCart()
             }>Empty Cart</button>
-            <button id="BuyButton">Checkout: ${checkoutPrice.toFixed(2)}</button>
+            <button id="BuyButton" onClick={
+                () => checkoutPrice > 0 ?
+                    alert(`You spent $${checkoutPrice.toFixed(2)}! Thank you for shopping with us!`) :
+                    alert("Please add items to the cart before checking out!")
+            }>Checkout: ${checkoutPrice.toFixed(2)}</button>
         </div>
     </div>;
 }
