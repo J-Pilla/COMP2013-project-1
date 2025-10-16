@@ -7,49 +7,76 @@ import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 
 export default function GrociariesAppContainer() {
+  // an array of objects that contain a product id and a quantity
+  const [productQuantities, setProductQuantities] = useState(products.map((product) => {
+    return {
+      id: product.id,
+      quantity: 0
+    };
+  }));
+
+  // set one quantity in productQuantities
+  const setProductQuantity = (id, quantity) => {
+    const newProductQuantities = productQuantities.map((productQuantity) => {
+      let newProductQuantity = {...productQuantity};
+      
+      if (productQuantity.id === id)
+        newProductQuantity.quantity += quantity;
+
+      return newProductQuantity;
+    });
+
+    setProductQuantities(newProductQuantities);
+  };
+
   /* an array populated by ProcuctCard,
    * each index contains a product, quantity, and totalPrice */
   const [cartItems, setCartItems] = useState([]);
 
   // adds a cartItem via ProductCard
-  const addToCart = (cartIndex, quantity) => {
-    /* I opted for a for loop, I was using .map(), but I fugured since
-     * I don't need to go through the full loop, this would be better */
-    let repeatIndex = 0;
-    for (;repeatIndex < cartItems.length; repeatIndex++) {
-      if (cartItems[repeatIndex].product.id === products[cartIndex].id) {
-        setItemQuantity(repeatIndex, quantity);
-        break;
-      }
-    }
-
-    if (repeatIndex === cartItems.length) {
-      let cartItemsCopy = [...cartItems];
-      
-      cartItemsCopy.push({
-        product: products[cartIndex],
-        quantity: quantity,
-        totalPrice: quantity * products[cartIndex].price.replace("$", "")});
+  const addToCart = (id, quantity) => {
+    let cartId = cartItems.find((cartItem) => cartItem.product.id === id);
     
-        setCartItems(cartItemsCopy);
+    if (cartId === undefined) {
+      let newCartItems = [...cartItems];
+      const addedProduct = products.find((product) => product.id === id);
+      
+      newCartItems.push({
+        product: {...addedProduct},
+        quantity: quantity,
+        totalPrice: quantity * addedProduct.price.replace("$", "")
+      });
+      
+      setCartItems(newCartItems);
+    }
+    else {
+      setItemQuantity(id, quantity);
     }
   }
 
-  /* sets quantity if a repeat cartItem is being added to,
+  /* sets a cartItem's quantity if a cartItem is being added to,
    * either via ProductCard or the QuantityCounter in CartCard,
    * totalPrice is updated to reflect the quantity */
-  const setItemQuantity = (index, quantity) => {
-    let cartItemsCopy = [...cartItems];
-    cartItemsCopy[index].quantity += quantity;
-    cartItemsCopy[index].totalPrice += quantity * cartItems[index].product.price.replace("$", "");
-    setCartItems(cartItemsCopy);
+  const setItemQuantity = (id, quantity) => {
+    const newCartItems = cartItems.map((cartItem) => {
+      let newCartItem = {...cartItem};
+
+      if (cartItem.product.id === id)
+      {
+        newCartItem.quantity += quantity;
+        newCartItem.totalPrice += quantity * cartItem.product.price.replace("$", "")
+      }
+
+      return newCartItem;
+    });
+
+    setCartItems(newCartItems);
   }
 
   // removes a cartItem via CartCard
-  const removeFromCart = (index) => {
-    let cartItemsCopy = [...cartItems];
-    cartItemsCopy.splice(index, 1);
-    setCartItems(cartItemsCopy);
+  const removeFromCart = (id) => {
+    const newCartItems = cartItems.filter((cartItem) => cartItem.product.id !== id);
+    setCartItems(newCartItems);
   }
 
   /* resets cartItems[] via CartContainer,
@@ -65,7 +92,15 @@ export default function GrociariesAppContainer() {
   <div className="GroceriesApp-Container">
     {/* I don't know if you had mentioned passing functions,
       * but I couldn't think of a better way */}
-    <ProductsContainer products={products} addToCart={addToCart}/>
-    <CartContainer cartItems={cartItems} setItemQuantity={setItemQuantity} removeFromCart={removeFromCart} emptyCart={emptyCart}/>
+    <ProductsContainer
+      products={products}
+      productQuantities={productQuantities}
+      setProductQuantity={setProductQuantity}
+      addToCart={addToCart}/>
+    <CartContainer
+      cartItems={cartItems}
+      setItemQuantity={setItemQuantity}
+      removeFromCart={removeFromCart}
+      emptyCart={emptyCart}/>
   </div></>;
 }
