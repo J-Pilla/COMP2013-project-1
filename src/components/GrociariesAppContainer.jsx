@@ -79,8 +79,7 @@ export default function GrociariesAppContainer() {
     setCartItems(newCartItems);
   }
 
-  /* resets cartItems[] via CartContainer,
-   * y'know I'm kinda linking the word via today */
+  // resets cartItems[] via CartContainer
   const emptyCart = () => {
     setCartItems([]);
   }
@@ -90,8 +89,6 @@ export default function GrociariesAppContainer() {
     * I figured this woud be the easiest way to set up a ternary */}
   <NavBar hasItems={cartItems.length > 0}/>
   <div className="GroceriesApp-Container">
-    {/* I don't know if you had mentioned passing functions,
-      * but I couldn't think of a better way */}
     <ProductsContainer
       products={products}
       productQuantities={productQuantities}

@@ -21,6 +21,6 @@ export default function ProductCard({
     <h3>{price}</h3>
     <button onClick={
       () => quantity > 0 && addToCart(id, quantity)
-      }>Add to Cart</button>
+    }>Add to Cart</button>
   </div>;
 }
