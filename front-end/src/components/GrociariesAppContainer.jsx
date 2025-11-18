@@ -29,16 +29,19 @@ export default function GrociariesAppContainer() {
 	// array containing quantities matched with products by their _id
 	const [productQuantities, setProductQuantities] = useState([]);
 	// object representing the form
-	const [productFrom, setProdcutForm] = useState(defaultProductForm);
+	const [productForm, setProdcutForm] = useState(defaultProductForm);
 	// an array populated by ProcuctCard, each index contains a product, quantity, and totalPrice
 	const [cartItems, setCartItems] = useState([]);
-	// control state for fetching the products
-	const [postResponse, setPostResponse] = useState("");
+	/* control state for fetching the products, I decided to use a number,
+	 * starts at 0 to initialize quantities, then flips from 1 and 2 to refresh */
+	const [fetchControl, setFetchControl] = useState(0);
+	const flipFetchControl = () =>
+		setFetchControl((prevState) => (prevState !== 1 ? 1 : 2));
 
 	// useEffect
 	useEffect(() => {
 		fetchProducts();
-	}, [postResponse]);
+	}, [fetchControl]);
 
 	/**
 	 * used to fetch contacts in useEffect
@@ -53,7 +56,7 @@ export default function GrociariesAppContainer() {
 					return product; // this extracts the depricated id from the products
 				})
 			);
-			if (!postResponse)
+			if (!fetchControl)
 				setProductQuantities(
 					response.data.map((data) => {
 						return {
@@ -68,7 +71,41 @@ export default function GrociariesAppContainer() {
 	};
 
 	// handlers
-	/** handler for QuantityCounter \<button onClick>,
+	/**
+	 * handler for ProductForm \<input onChange>,
+	 * updates the form as a user types
+	 */
+	const updateProductForm = (sender) => {
+		setProdcutForm((prevState) => ({
+			...prevState,
+			[sender.target.name]: sender.target.value,
+		}));
+	};
+
+	/**
+	 * handler for ProductForm \<form onSubmit={!isEditing}>,
+	 * adds a new product to the database
+	 */
+	const addProduct = async (sender) => {
+		sender.preventDefault();
+		try {
+			await axios
+				.post(baseURL + productsPath, productForm)
+				.then((response) => {
+					flipFetchControl();
+					setProductQuantities((prevState) => [
+						...prevState,
+						{ _id: response, quantity: 0 },
+					]);
+					setProdcutForm(defaultProductForm);
+				});
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	/**
+	 * handler for QuantityCounter \<button onClick>,
 	 * set one quantity in productQuantities
 	 */
 	const setProductQuantity = (_id, quantity) => {
@@ -154,12 +191,16 @@ export default function GrociariesAppContainer() {
 			 * I figured this woud be the easiest way to set up a ternary */}
 			<NavBar hasItems={cartItems.length > 0} />
 			<div className="GroceriesApp-Container">
-				<ProductFrom {...ProductFrom} />
+				<ProductFrom
+					{...ProductFrom}
+					updateForm={updateProductForm}
+					addProduct={addProduct}
+				/>
 				<ProductsContainer
 					products={products}
 					quantities={productQuantities}
 					setQuantity={setProductQuantity}
-					addToCart={addToCart}
+					//addToCart={addToCart}
 				/>
 				<CartContainer
 					cartItems={cartItems}
