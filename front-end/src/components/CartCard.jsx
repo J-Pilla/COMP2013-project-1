@@ -7,7 +7,7 @@ export default function CartCard({
 	price,
 	quantity,
 	totalPrice,
-	setItemQuantity,
+	setQuantity,
 	removeFromCart,
 }) {
 	return (
@@ -19,7 +19,7 @@ export default function CartCard({
 				<QuantityCounter
 					_id={_id}
 					quantity={quantity}
-					setQuantity={setItemQuantity}
+					setQuantity={setQuantity}
 					minQuantity={1}
 				/>
 			</div>

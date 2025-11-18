@@ -2,7 +2,7 @@ import CartCard from "./CartCard";
 
 export default function CartContainer({
 	cartItems,
-	setItemQuantity,
+	setQuantity,
 	removeFromCart,
 	emptyCart,
 }) {
@@ -18,7 +18,7 @@ export default function CartContainer({
 					{...cartItem.product}
 					quantity={cartItem.quantity}
 					totalPrice={cartItem.totalPrice}
-					setItemQuantity={setItemQuantity}
+					setQuantity={setQuantity}
 					removeFromCart={removeFromCart}
 				/>
 			))}

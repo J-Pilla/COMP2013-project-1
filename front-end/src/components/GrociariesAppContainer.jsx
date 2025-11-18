@@ -1,6 +1,10 @@
+// react
 import { useState, useEffect } from "react";
+
+// node
 import axios from "axios";
 
+// components
 import NavBar from "./navBar";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
@@ -11,18 +15,24 @@ export default function GrociariesAppContainer() {
 	const productsPath = "products/";
 
 	// states
+	// array containing products from the database
 	const [products, setProducts] = useState([]);
+	// array containing quantities matched with products by their _id
 	const [productQuantities, setProductQuantities] = useState([]);
-	const [postResponse, setPostResponse] = useState("");
 	// an array populated by ProcuctCard, each index contains a product, quantity, and totalPrice
 	const [cartItems, setCartItems] = useState([]);
+	// control state for fetching the products
+	const [postResponse, setPostResponse] = useState("");
 
 	// useEffect
 	useEffect(() => {
 		fetchProducts();
-		console.log(postResponse);
 	}, [postResponse]);
 
+	/**
+	 * used to fetch contacts in useEffect
+	 * populates products and productQuantities
+	 */
 	const fetchProducts = async () => {
 		try {
 			const response = await axios.get(baseURL + productsPath);
@@ -47,7 +57,9 @@ export default function GrociariesAppContainer() {
 	};
 
 	// handlers
-	/** set one quantity in products */
+	/** handler for QuantityCounter \<button onClick>,
+	 * set one quantity in productQuantities
+	 */
 	const setProductQuantity = (_id, quantity) => {
 		const nextState = productQuantities.map((product) => {
 			let currentProduct = { ...product };
@@ -60,7 +72,10 @@ export default function GrociariesAppContainer() {
 		setProductQuantities(nextState);
 	};
 
-	/** adds a cartItem via ProductCard */
+	/**
+	 * handler for ProductCard \<button onClick>,
+	 * adds a cartItem
+	 */
 	const addToCart = (_id, quantity) => {
 		let cartId = cartItems.find((cartItem) => cartItem.product._id === _id);
 
@@ -82,9 +97,11 @@ export default function GrociariesAppContainer() {
 		}
 	};
 
-	/** sets a cartItem's quantity if a cartItem is being added to,
-	 ** either via ProductCard or the QuantityCounter in CartCard,
-	 ** totalPrice is updated to reflect the quantity */
+	/**
+	 * handler for QuantityCounter \<button onClick>,
+	 * also called from addToCart to initialize cartItem[_id].quantity,
+	 * sets cartItem[_id].quantity, totalPrice is updated to reflect the quantity
+	 */
 	const setItemQuantity = (_id, quantity) => {
 		const newCartItems = cartItems.map((cartItem) => {
 			let newCartItem = { ...cartItem };
@@ -101,7 +118,10 @@ export default function GrociariesAppContainer() {
 		setCartItems(newCartItems);
 	};
 
-	/** removes a cartItem via CartCard */
+	/**
+	 * handler for CartCard \<button onClick>,
+	 * removes a cartItem via CartCard
+	 */
 	const removeFromCart = (_id) => {
 		const newCartItems = cartItems.filter(
 			(cartItem) => cartItem.product._id !== _id
@@ -109,7 +129,10 @@ export default function GrociariesAppContainer() {
 		setCartItems(newCartItems);
 	};
 
-	/** resets cartItems[] via CartContainer */
+	/**
+	 *  hander for CartContainer \<button onClick>,
+	 * resets cartItems[] via CartContainer
+	 */
 	const emptyCart = () => {
 		setCartItems([]);
 	};
@@ -128,7 +151,7 @@ export default function GrociariesAppContainer() {
 				/>
 				<CartContainer
 					cartItems={cartItems}
-					setItemQuantity={setItemQuantity}
+					setQuantity={setItemQuantity}
 					removeFromCart={removeFromCart}
 					emptyCart={emptyCart}
 				/>
