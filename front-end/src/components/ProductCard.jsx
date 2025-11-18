@@ -24,7 +24,7 @@ export default function ProductCard({
 			<button
 				onClick={() =>
 					quantity > 0
-						? addToCart(id, quantity)
+						? addToCart(_id, quantity)
 						: alert(
 								"Please increase the quantity to before adding to the cart!"
 						  )

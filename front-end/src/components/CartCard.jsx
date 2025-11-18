@@ -27,7 +27,7 @@ export default function CartCard({
 				<h3>Total: ${totalPrice.toFixed(2)}</h3>
 				<button
 					className="RemoveButton"
-					onClick={() => removeFromCart(id)}>
+					onClick={() => removeFromCart(_id)}>
 					Remove
 				</button>
 			</div>

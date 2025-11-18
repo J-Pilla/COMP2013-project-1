@@ -61,12 +61,14 @@ export default function GrociariesAppContainer() {
 	};
 
 	/** adds a cartItem via ProductCard */
-	const addToCart = (id, quantity) => {
-		let cartId = cartItems.find((cartItem) => cartItem.product.id === id);
+	const addToCart = (_id, quantity) => {
+		let cartId = cartItems.find((cartItem) => cartItem.product._id === _id);
 
 		if (cartId === undefined) {
 			let newCartItems = [...cartItems];
-			const addedProduct = products.find((product) => product.id === id);
+			const addedProduct = products.find(
+				(product) => product._id === _id
+			);
 
 			newCartItems.push({
 				product: { ...addedProduct },
@@ -76,18 +78,18 @@ export default function GrociariesAppContainer() {
 
 			setCartItems(newCartItems);
 		} else {
-			setItemQuantity(id, quantity);
+			setItemQuantity(_id, quantity);
 		}
 	};
 
 	/** sets a cartItem's quantity if a cartItem is being added to,
 	 ** either via ProductCard or the QuantityCounter in CartCard,
 	 ** totalPrice is updated to reflect the quantity */
-	const setItemQuantity = (id, quantity) => {
+	const setItemQuantity = (_id, quantity) => {
 		const newCartItems = cartItems.map((cartItem) => {
 			let newCartItem = { ...cartItem };
 
-			if (cartItem.product.id === id) {
+			if (cartItem.product._id === _id) {
 				newCartItem.quantity += quantity;
 				newCartItem.totalPrice +=
 					quantity * cartItem.product.price.replace("$", "");
@@ -100,9 +102,9 @@ export default function GrociariesAppContainer() {
 	};
 
 	/** removes a cartItem via CartCard */
-	const removeFromCart = (id) => {
+	const removeFromCart = (_id) => {
 		const newCartItems = cartItems.filter(
-			(cartItem) => cartItem.product.id !== id
+			(cartItem) => cartItem.product._id !== _id
 		);
 		setCartItems(newCartItems);
 	};
