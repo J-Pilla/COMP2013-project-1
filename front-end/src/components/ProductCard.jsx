@@ -13,7 +13,7 @@ export default function ProductCard({
 	return (
 		<div className="ProductCard">
 			<h3>{productName}</h3>
-			<img src={image} alt={`productName, brand`} />
+			{image && <img src={image} alt={`productName, brand`} />}
 			<p>{brand}</p>
 			<QuantityCounter
 				_id={_id}
