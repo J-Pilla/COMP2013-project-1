@@ -22,26 +22,28 @@ export default function CartContainer({
 					removeFromCart={removeFromCart}
 				/>
 			))}
-			<div className="CartListBtns">
-				<button className="RemoveButton" onClick={() => emptyCart()}>
-					Empty Cart
-				</button>
-				<button
-					_id="BuyButton"
-					onClick={() =>
-						checkoutPrice > 0
-							? alert(
-									`You spent $${checkoutPrice.toFixed(
-										2
-									)}! Thank you for shopping with us!`
-							  )
-							: alert(
-									"Please add items to the cart before checking out!"
-							  )
-					}>
-					Checkout: ${checkoutPrice.toFixed(2)}
-				</button>
-			</div>
+			{cartItems.length > 0 ? (
+				<div className="CartListBtns">
+					<button
+						className="RemoveButton"
+						onClick={() => emptyCart()}>
+						Empty Cart
+					</button>
+					<button
+						_id="BuyButton"
+						onClick={() =>
+							alert(
+								`You spent $${checkoutPrice.toFixed(
+									2
+								)}! Thank you for shopping with us!`
+							)
+						}>
+						Checkout: ${checkoutPrice.toFixed(2)}
+					</button>
+				</div>
+			) : (
+				<p>No items in cart</p>
+			)}
 		</div>
 	);
 }
