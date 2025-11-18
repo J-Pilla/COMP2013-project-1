@@ -3,9 +3,9 @@ export default function ProductFrom({
 	brand,
 	image,
 	price,
+	updateForm,
 	addProduct,
 	editProduct,
-	updateForm,
 	isEditing,
 }) {
 	return (
