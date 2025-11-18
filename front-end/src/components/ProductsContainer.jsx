@@ -2,7 +2,8 @@ import ProductCard from "./ProductCard";
 
 export default function ProductsContainer({
 	products,
-	setProductQuantity,
+	quantities,
+	setQuantity,
 	addToCart,
 }) {
 	return (
@@ -11,7 +12,12 @@ export default function ProductsContainer({
 				<ProductCard
 					key={product._id}
 					{...product}
-					setProductQuantity={setProductQuantity}
+					quantity={
+						quantities.find(
+							(quantity) => quantity._id === product._id
+						).quantity
+					}
+					setQuantity={setQuantity}
 					addToCart={addToCart}
 				/>
 			))}

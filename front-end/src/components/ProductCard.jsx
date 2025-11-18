@@ -7,7 +7,7 @@ export default function ProductCard({
 	brand,
 	price,
 	quantity,
-	setProductQuantity,
+	setQuantity,
 	addToCart,
 }) {
 	return (
@@ -18,7 +18,7 @@ export default function ProductCard({
 			<QuantityCounter
 				_id={_id}
 				quantity={quantity}
-				setQuantity={setProductQuantity}
+				setQuantity={setQuantity}
 			/>
 			<h3>{price}</h3>
 			<button

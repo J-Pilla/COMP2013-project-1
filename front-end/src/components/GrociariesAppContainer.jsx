@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import NavBar from "./r";
+import NavBar from "./navBar";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 
@@ -10,18 +10,18 @@ export default function GrociariesAppContainer() {
 	const baseURL = "http://localhost:3000/";
 	const productsPath = "products/";
 
-	// default states
-
 	// states
-	// quantity is now attatched to products
 	const [products, setProducts] = useState([]);
+	const [productQuantities, setProductQuantities] = useState([]);
+	const [postResponse, setPostResponse] = useState("");
 	// an array populated by ProcuctCard, each index contains a product, quantity, and totalPrice
 	const [cartItems, setCartItems] = useState([]);
 
 	// useEffect
 	useEffect(() => {
 		fetchProducts();
-	}, []);
+		console.log(postResponse);
+	}, [postResponse]);
 
 	const fetchProducts = async () => {
 		try {
@@ -29,36 +29,38 @@ export default function GrociariesAppContainer() {
 			setProducts(
 				response.data.map((data) => {
 					const { id, ...product } = data;
-					return {
-						...product,
-						quantity: 0,
-					};
+					return product; // this extracts the depricated id from the products
 				})
 			);
+			if (!postResponse)
+				setProductQuantities(
+					response.data.map((data) => {
+						return {
+							_id: data._id,
+							quantity: 0,
+						};
+					})
+				);
 		} catch (error) {
 			console.log(error.message);
 		}
 	};
 
-	// set one quantity in products
+	// handlers
+	/** set one quantity in products */
 	const setProductQuantity = (_id, quantity) => {
-		console.log(_id);
-		const newProducts = products.map((product) => {
-			let newProduct = { ...product };
+		const nextState = productQuantities.map((product) => {
+			let currentProduct = { ...product };
 
-			if (product._id === _id) {
-				console.log(newProduct);
-				newProduct.quantity += quantity;
-				console.log(newProduct);
-			}
+			if (product._id === _id) currentProduct.quantity += quantity;
 
-			return newProduct;
+			return currentProduct;
 		});
 
-		setProducts(newProducts);
+		setProductQuantities(nextState);
 	};
 
-	// adds a cartItem via ProductCard
+	/** adds a cartItem via ProductCard */
 	const addToCart = (id, quantity) => {
 		let cartId = cartItems.find((cartItem) => cartItem.product.id === id);
 
@@ -78,9 +80,9 @@ export default function GrociariesAppContainer() {
 		}
 	};
 
-	/* sets a cartItem's quantity if a cartItem is being added to,
-	 * either via ProductCard or the QuantityCounter in CartCard,
-	 * totalPrice is updated to reflect the quantity */
+	/** sets a cartItem's quantity if a cartItem is being added to,
+	 ** either via ProductCard or the QuantityCounter in CartCard,
+	 ** totalPrice is updated to reflect the quantity */
 	const setItemQuantity = (id, quantity) => {
 		const newCartItems = cartItems.map((cartItem) => {
 			let newCartItem = { ...cartItem };
@@ -97,7 +99,7 @@ export default function GrociariesAppContainer() {
 		setCartItems(newCartItems);
 	};
 
-	// removes a cartItem via CartCard
+	/** removes a cartItem via CartCard */
 	const removeFromCart = (id) => {
 		const newCartItems = cartItems.filter(
 			(cartItem) => cartItem.product.id !== id
@@ -105,7 +107,7 @@ export default function GrociariesAppContainer() {
 		setCartItems(newCartItems);
 	};
 
-	// resets cartItems[] via CartContainer
+	/** resets cartItems[] via CartContainer */
 	const emptyCart = () => {
 		setCartItems([]);
 	};
@@ -118,7 +120,8 @@ export default function GrociariesAppContainer() {
 			<div className="GroceriesApp-Container">
 				<ProductsContainer
 					products={products}
-					setProductQuantity={setProductQuantity}
+					quantities={productQuantities}
+					setQuantity={setProductQuantity}
 					addToCart={addToCart}
 				/>
 				<CartContainer
