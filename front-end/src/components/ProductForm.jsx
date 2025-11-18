@@ -10,6 +10,7 @@ export default function ProductFrom({
 }) {
 	return (
 		<div className="productForm">
+			<h3>Product Form</h3>
 			<form onSubmit={!isEditing ? addProduct : editProduct}>
 				<input
 					type="text"
@@ -48,6 +49,9 @@ export default function ProductFrom({
 					required
 				/>
 				<br />
+				<button type="submit">
+					{!isEditing ? "Add Product" : "Edit Product"}
+				</button>
 			</form>
 		</div>
 	);
