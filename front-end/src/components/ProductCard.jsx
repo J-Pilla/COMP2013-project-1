@@ -1,3 +1,5 @@
+import noImage from "../assets/no-image.png";
+
 import QuantityCounter from "./QuantityCounter";
 
 export default function ProductCard({
@@ -13,7 +15,7 @@ export default function ProductCard({
 	return (
 		<div className="ProductCard">
 			<h3>{productName}</h3>
-			{image && <img src={image} alt={`productName, brand`} />}
+			<img src={image ? image : noImage} alt={`productName, brand`} />
 			<p>{brand}</p>
 			<QuantityCounter
 				_id={_id}
