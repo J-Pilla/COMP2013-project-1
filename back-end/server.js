@@ -72,7 +72,7 @@ server.delete(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
 		await Product.findByIdAndDelete(_id);
-		response.send({ _id });
+		response.send({ message: _id });
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
@@ -83,7 +83,7 @@ server.patch(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
 		await Product.findByIdAndUpdate(_id, request.body);
-		response.send({ _id });
+		response.send({ message: _id });
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
