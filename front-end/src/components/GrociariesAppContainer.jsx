@@ -95,12 +95,34 @@ export default function GrociariesAppContainer() {
 					price: `$${Number(productForm.price).toFixed(2)}`,
 				})
 				.then((response) => {
+					console.log(
+						`Product successfully added with _id: ${response}`
+					);
 					setProductQuantities((prevState) => [
 						...prevState,
 						{ _id: response.data.message, quantity: 0 },
 					]);
 					flipFetchControl();
 					setProdcutForm(defaultProductForm);
+				});
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	/**
+	 * handler for ProductCard \<Button onClick> (Delete),
+	 * deletes a product from the database
+	 */
+	const deleteProduct = async (_id) => {
+		try {
+			await axios
+				.delete(baseURL + productsPath + _id)
+				.then((response) => {
+					console.log(
+						`Product successfully deleted with _id: ${response}`
+					);
+					flipFetchControl();
 				});
 		} catch (error) {
 			console.log(error.message);
@@ -204,6 +226,7 @@ export default function GrociariesAppContainer() {
 					quantities={productQuantities}
 					setQuantity={setProductQuantity}
 					addToCart={addToCart}
+					deleteProduct={deleteProduct}
 				/>
 				<CartContainer
 					cartItems={cartItems}

@@ -11,6 +11,7 @@ export default function ProductCard({
 	quantity,
 	setQuantity,
 	addToCart,
+	deleteProduct,
 }) {
 	return (
 		<div className="ProductCard">
@@ -32,6 +33,9 @@ export default function ProductCard({
 						  )
 				}>
 				Add to Cart
+			</button>
+			<button className="RemoveButton" onClick={() => deleteProduct(_id)}>
+				Delete
 			</button>
 		</div>
 	);

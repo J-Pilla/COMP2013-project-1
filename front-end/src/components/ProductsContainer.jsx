@@ -5,6 +5,7 @@ export default function ProductsContainer({
 	quantities,
 	setQuantity,
 	addToCart,
+	deleteProduct,
 }) {
 	return (
 		<div className="ProductsContainer">
@@ -19,6 +20,7 @@ export default function ProductsContainer({
 					}
 					setQuantity={setQuantity}
 					addToCart={addToCart}
+					deleteProduct={deleteProduct}
 				/>
 			))}
 		</div>
