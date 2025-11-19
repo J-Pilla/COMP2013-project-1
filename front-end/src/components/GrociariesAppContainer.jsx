@@ -53,7 +53,7 @@ export default function GrociariesAppContainer() {
 			setProducts(
 				response.data.map((data) => {
 					const { id, ...product } = data;
-					return product; // this extracts the depricated id from the products
+					return product; // this extracts the deprecated id from the products
 				})
 			);
 			if (!fetchControl)
@@ -125,6 +125,7 @@ export default function GrociariesAppContainer() {
 					setProductQuantities((prevState) =>
 						prevState.filter((product) => product._id !== _id)
 					);
+					removeFromCart(_id);
 					flipFetchControl();
 				});
 		} catch (error) {
@@ -196,7 +197,7 @@ export default function GrociariesAppContainer() {
 
 	/**
 	 * handler for CartCard \<button onClick>,
-	 * removes a cartItem via CartCard
+	 * removes a cartItem
 	 */
 	const removeFromCart = (_id) => {
 		const newCartItems = cartItems.filter(
@@ -207,7 +208,7 @@ export default function GrociariesAppContainer() {
 
 	/**
 	 *  hander for CartContainer \<button onClick>,
-	 * resets cartItems[] via CartContainer
+	 * resets cartItems[]
 	 */
 	const emptyCart = () => {
 		setCartItems([]);
