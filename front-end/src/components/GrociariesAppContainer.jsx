@@ -96,7 +96,7 @@ export default function GrociariesAppContainer() {
 				})
 				.then((response) => {
 					console.log(
-						`Product successfully added with _id: ${response}`
+						`Product successfully added with _id: ${response.data.message}`
 					);
 					setProductQuantities((prevState) => [
 						...prevState,
@@ -120,7 +120,10 @@ export default function GrociariesAppContainer() {
 				.delete(baseURL + productsPath + _id)
 				.then((response) => {
 					console.log(
-						`Product successfully deleted with _id: ${response}`
+						`Product successfully deleted with _id: ${response.data.message}`
+					);
+					setProductQuantities((prevState) =>
+						prevState.filter((product) => product._id !== _id)
 					);
 					flipFetchControl();
 				});

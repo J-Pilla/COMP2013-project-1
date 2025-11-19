@@ -9,20 +9,26 @@ export default function ProductsContainer({
 }) {
 	return (
 		<div className="ProductsContainer">
-			{products.map((product) => (
-				<ProductCard
-					key={product._id}
-					{...product}
-					quantity={
-						quantities.find(
-							(quantity) => quantity._id === product._id
-						).quantity
-					}
-					setQuantity={setQuantity}
-					addToCart={addToCart}
-					deleteProduct={deleteProduct}
-				/>
-			))}
+			{products.map((product) => {
+				const quantity = quantities.find(
+					(quantity) => quantity._id === product._id
+				);
+				return (
+					<ProductCard
+						key={product._id}
+						{...product}
+						quantity={
+							/* for such a simple solution to have to smash my head on the computer for an hour or two,
+							 * when deleting, the index of the quantities array with the _id is deleted before the
+							 * server is done fetching the products, this prevents reading quantity when it's undefined */
+							quantity !== undefined ? quantity.quantity : 0
+						}
+						setQuantity={setQuantity}
+						addToCart={addToCart}
+						deleteProduct={deleteProduct}
+					/>
+				);
+			})}
 		</div>
 	);
 }
