@@ -18,9 +18,11 @@ export default function ProductsContainer({
 						key={product._id}
 						{...product}
 						quantity={
-							/* for such a simple solution to have to smash my head on the computer for an hour or two,
-							 * when deleting, the index of the quantities array with the _id is deleted before the
-							 * server is done fetching the products, this prevents reading quantity when it's undefined */
+							/*
+							 * for such a simple solution to have to smash my head on the computer for an hour or two,
+							 * when deleting, the index of the quantities array with the _id is deleted before the server
+							 * is done fetching the refreshed products, this prevents reading quantity when it's undefined
+							 */
 							quantity !== undefined ? quantity.quantity : 0
 						}
 						setQuantity={setQuantity}
