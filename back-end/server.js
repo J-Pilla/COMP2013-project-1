@@ -11,8 +11,8 @@ const { DB_URI } = process.env;
 // models
 const Product = require("./models/Product");
 // paths
-const productsPath = "products";
-const _idParam = ":_id";
+const productsPath = "/products";
+const _idParam = "/:_id";
 
 // middleware
 server.use(express.json());
@@ -39,7 +39,7 @@ server.get("/", (request, response) => {
 });
 
 // products
-server.get(`/${productsPath}`, async (request, response) => {
+server.get(productsPath, async (request, response) => {
 	try {
 		response.send(await Product.find());
 	} catch (error) {
@@ -48,7 +48,7 @@ server.get(`/${productsPath}`, async (request, response) => {
 });
 
 // products/:_id
-server.get(`/${productsPath + _idParam}`, async (request, response) => {
+server.get(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
 		response.send(await Product.findById(_id));
@@ -58,7 +58,7 @@ server.get(`/${productsPath + _idParam}`, async (request, response) => {
 });
 
 // post
-server.post(`/${productsPath}`, async (request, response) => {
+server.post(productsPath, async (request, response) => {
 	try {
 		const product = await new Product(request.body).save();
 		response.status(200).send({ message: product._id });
@@ -68,7 +68,7 @@ server.post(`/${productsPath}`, async (request, response) => {
 });
 
 // delete @ _id
-server.delete(`/${productsPath + _idParam}`, async (request, response) => {
+server.delete(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
 		await Product.findByIdAndDelete(_id);
