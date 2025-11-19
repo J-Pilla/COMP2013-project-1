@@ -47,7 +47,7 @@ server.get(productsPath, async (request, response) => {
 	}
 });
 
-// products/:_id
+// products @ _id
 server.get(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
@@ -61,18 +61,29 @@ server.get(productsPath + _idParam, async (request, response) => {
 server.post(productsPath, async (request, response) => {
 	try {
 		const product = await new Product(request.body).save();
-		response.status(200).send({ message: product._id });
+		response.send({ message: product._id });
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
 });
 
-// delete @ _id
+// delete products @ _id
 server.delete(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
 		await Product.findByIdAndDelete(_id);
-		response.status(200).send({ _id });
+		response.send({ _id });
+	} catch (error) {
+		response.status(500).send({ message: error.message });
+	}
+});
+
+// patch products @ _id
+server.patch(productsPath + _idParam, async (request, response) => {
+	const { _id } = request.params;
+	try {
+		await Product.findByIdAndUpdate(_id, request.body);
+		response.send({ _id });
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
