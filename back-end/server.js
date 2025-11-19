@@ -56,3 +56,13 @@ server.get(`/${productsPath + _idParam}`, async (request, response) => {
 		response.status(500).json({ message: error.message });
 	}
 });
+
+// post
+server.post(`/${productsPath}`, async (request, response) => {
+	try {
+		const product = await new Product(request.body).save();
+		response.status(200).send({ message: product._id });
+	} catch (error) {
+		response.status(500).send({ message: error.message });
+	}
+});
