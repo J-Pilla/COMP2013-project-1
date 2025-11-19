@@ -4,14 +4,14 @@ export default function ProductFrom({
 	image,
 	price,
 	updateForm,
+	editing_id,
 	addProduct,
 	editProduct,
-	isEditing = false,
 }) {
 	return (
 		<div className="productForm">
 			<h3>Product Form</h3>
-			<form onSubmit={!isEditing ? addProduct : editProduct}>
+			<form onSubmit={!editing_id ? addProduct : editProduct}>
 				<input
 					type="text"
 					name="productName"
@@ -50,7 +50,7 @@ export default function ProductFrom({
 				/>
 				<br />
 				<button type="submit">
-					{!isEditing ? "Add Product" : "Edit Product"}
+					{!editing_id ? "Add Product" : "Edit Product"}
 				</button>
 			</form>
 		</div>
