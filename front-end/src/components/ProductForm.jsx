@@ -6,7 +6,7 @@ export default function ProductFrom({
 	updateForm,
 	addProduct,
 	editProduct,
-	isEditing,
+	isEditing = false,
 }) {
 	return (
 		<div className="productForm">

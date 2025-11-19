@@ -20,7 +20,7 @@ export default function GrociariesAppContainer() {
 		productName: "",
 		brand: "",
 		image: "",
-		price: 0,
+		price: "",
 	};
 
 	// states
@@ -90,13 +90,16 @@ export default function GrociariesAppContainer() {
 		sender.preventDefault();
 		try {
 			await axios
-				.post(baseURL + productsPath, productForm)
+				.post(baseURL + productsPath, {
+					...productForm,
+					price: `$${Number(productForm.price).toFixed(2)}`,
+				})
 				.then((response) => {
-					flipFetchControl();
 					setProductQuantities((prevState) => [
 						...prevState,
-						{ _id: response, quantity: 0 },
+						{ _id: response.data.message, quantity: 0 },
 					]);
+					flipFetchControl();
 					setProdcutForm(defaultProductForm);
 				});
 		} catch (error) {
@@ -192,7 +195,7 @@ export default function GrociariesAppContainer() {
 			<NavBar hasItems={cartItems.length > 0} />
 			<div className="GroceriesApp-Container">
 				<ProductFrom
-					{...ProductFrom}
+					{...productForm}
 					updateForm={updateProductForm}
 					addProduct={addProduct}
 				/>
@@ -200,7 +203,7 @@ export default function GrociariesAppContainer() {
 					products={products}
 					quantities={productQuantities}
 					setQuantity={setProductQuantity}
-					//addToCart={addToCart}
+					addToCart={addToCart}
 				/>
 				<CartContainer
 					cartItems={cartItems}
