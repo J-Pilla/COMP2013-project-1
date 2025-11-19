@@ -140,8 +140,8 @@ export default function GrociariesAppContainer() {
 			);
 			console.log(response.data.message);
 			// update the cart to match any changes to items already added
-			setCartItems((prevState) => {
-				const nextState = prevState.map((item) =>
+			setCartItems((prevState) =>
+				prevState.map((item) =>
 					item.product._id === response.data._id
 						? {
 								product: {
@@ -154,9 +154,8 @@ export default function GrociariesAppContainer() {
 									productForm.price.replace("$", ""),
 						  }
 						: item
-				);
-				return nextState;
-			});
+				)
+			);
 			flipFetchControl();
 			setProductForm(defaultProductForm);
 			setEditing_id("");
@@ -212,15 +211,14 @@ export default function GrociariesAppContainer() {
 	 * set one quantity in productQuantities
 	 */
 	const setProductQuantity = (_id, quantity) => {
-		const nextState = productQuantities.map((product) => {
-			let currentProduct = { ...product };
-
-			if (product._id === _id) currentProduct.quantity += quantity;
-
-			return currentProduct;
-		});
-
-		setProductQuantities(nextState);
+		// same type of change as addToCart
+		setProductQuantities((prevState) =>
+			prevState.map((product) =>
+				product._id === _id
+					? { ...product, quantity: product.quantity + quantity }
+					: product
+			)
+		);
 	};
 
 	/**
@@ -229,24 +227,25 @@ export default function GrociariesAppContainer() {
 	 * adds a cartItem
 	 */
 	const addToCart = (_id, quantity) => {
-		let cartId = cartItems.find((cartItem) => cartItem.product._id === _id);
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		if (cartId === undefined) {
-			let newCartItems = [...cartItems];
-			const addedProduct = products.find(
-				(product) => product._id === _id
-			);
-
-			newCartItems.push({
-				product: { ...addedProduct },
-				quantity: quantity,
-				totalPrice: quantity * addedProduct.price.replace("$", ""),
+		/* I was not happy with this function so I am documenting changes here
+		 * first, I didn't like creating a single use variable so I just did.find() in the if statement
+		 * second, I wanted to make setCartItems more like my sets above, having the logic in the callback */
+		if (
+			cartItems.find((cartItem) => cartItem.product._id === _id) ===
+			undefined
+		)
+			setCartItems((prevState) => {
+				const product = products.find((product) => product._id === _id);
+				return [
+					...prevState,
+					{
+						product: { ...product },
+						quantity: quantity,
+						totalPrice: quantity * product.price.replace("$", ""),
+					},
+				];
 			});
-
-			setCartItems(newCartItems);
-		} else {
-			setItemQuantity(_id, quantity);
-		}
+		else setItemQuantity(_id, quantity);
 	};
 
 	// CartCard
@@ -258,19 +257,18 @@ export default function GrociariesAppContainer() {
 	 * sets cartItem[_id].quantity, totalPrice is updated to reflect the quantity
 	 */
 	const setItemQuantity = (_id, quantity) => {
-		const newCartItems = cartItems.map((cartItem) => {
-			let newCartItem = { ...cartItem };
-
-			if (cartItem.product._id === _id) {
-				newCartItem.quantity += quantity;
-				newCartItem.totalPrice +=
-					quantity * cartItem.product.price.replace("$", "");
-			}
-
-			return newCartItem;
-		});
-
-		setCartItems(newCartItems);
+		setCartItems((prevState) =>
+			prevState.map((item) => {
+				const currentItem = { ...item };
+				if (currentItem.product._id === _id) {
+					currentItem.quantity += quantity;
+					currentItem.totalPrice =
+						currentItem.quantity *
+						currentItem.product.price.replace("$", "");
+				}
+				return currentItem;
+			})
+		);
 	};
 
 	/**
@@ -279,10 +277,9 @@ export default function GrociariesAppContainer() {
 	 * removes a cartItem
 	 */
 	const removeFromCart = (_id) => {
-		const newCartItems = cartItems.filter(
-			(cartItem) => cartItem.product._id !== _id
+		setCartItems((prevState) =>
+			prevState.filter((item) => item.product._id !== _id)
 		);
-		setCartItems(newCartItems);
 	};
 
 	// <CartContainer>
