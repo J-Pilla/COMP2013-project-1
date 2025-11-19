@@ -61,7 +61,10 @@ server.get(productsPath + _idParam, async (request, response) => {
 server.post(productsPath, async (request, response) => {
 	try {
 		const product = await new Product(request.body).save();
-		response.send({ message: product._id });
+		response.send({
+			message: `${product.productName} was successfully added`,
+			_id: product._id,
+		});
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
@@ -71,8 +74,11 @@ server.post(productsPath, async (request, response) => {
 server.delete(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
-		await Product.findByIdAndDelete(_id);
-		response.send({ message: _id });
+		const product = await Product.findByIdAndDelete(_id);
+		response.send({
+			message: `${product.productName} was successfully deleted`,
+			_id: product._id,
+		});
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
@@ -82,8 +88,11 @@ server.delete(productsPath + _idParam, async (request, response) => {
 server.patch(productsPath + _idParam, async (request, response) => {
 	const { _id } = request.params;
 	try {
-		await Product.findByIdAndUpdate(_id, request.body);
-		response.send({ message: _id });
+		const product = await Product.findByIdAndUpdate(_id, request.body);
+		response.send({
+			message: `${product.productName} was successfully edited`,
+			_id: product._id,
+		});
 	} catch (error) {
 		response.status(500).send({ message: error.message });
 	}
