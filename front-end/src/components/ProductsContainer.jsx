@@ -5,6 +5,7 @@ export default function ProductsContainer({
 	quantities,
 	setQuantity,
 	addToCart,
+	editProduct,
 	deleteProduct,
 }) {
 	return (
@@ -27,6 +28,7 @@ export default function ProductsContainer({
 						}
 						setQuantity={setQuantity}
 						addToCart={addToCart}
+						editProduct={editProduct}
 						deleteProduct={deleteProduct}
 					/>
 				);

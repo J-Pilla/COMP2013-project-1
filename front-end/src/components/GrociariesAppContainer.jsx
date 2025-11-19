@@ -30,7 +30,8 @@ export default function GrociariesAppContainer() {
 	const [productQuantities, setProductQuantities] = useState([]);
 	// object representing the form
 	const [productForm, setProductForm] = useState(defaultProductForm);
-	// string that contains the _id being edited, empty when not editing
+	/* string that contains the _id being edited, empty when not editing
+	 * I decided to use this instead of a bool, this way productForm is cleaner as well */
 	const [editing_id, setEditing_id] = useState("");
 	// an array populated by ProcuctCard, each index contains a product, quantity, and totalPrice
 	const [cartItems, setCartItems] = useState([]);
@@ -112,42 +113,7 @@ export default function GrociariesAppContainer() {
 	};
 
 	/**
-	 * handler for ProductCard \<Button onClick> (Delete),
-	 * deletes a product from the database
-	 */
-	const deleteProduct = async (_id) => {
-		try {
-			const response = await axios.delete(baseURL + productsPath + _id);
-
-			console.log(response.data.message);
-			/* removes the deleted product from productQuantities, this allows the
-			 * quantities to not be reset to 0 everytime a product is deleted */
-			setProductQuantities((prevState) =>
-				prevState.filter((product) => product._id !== response.data._id)
-			);
-			flipFetchControl();
-			removeFromCart(response.data._id);
-		} catch (error) {
-			console.log(error.message);
-		}
-	};
-
-	/**
-	 * handler for ProductCard \<Button onClick> (Edit),
-	 * used to fill the product form with a product to edit
-	 */
-	const fetchProduct = async (_id) => {
-		try {
-			const response = await axios.get(baseURL + productsPath + _id);
-			setProductForm(response.data.form);
-			setEditing_id(response.data._id);
-		} catch (error) {
-			console.log(error.message);
-		}
-	};
-
-	/**
-	 * handler for QuantityCounter \<button onClick>,
+	 * handler for ProductCard->QuantityCounter \<button onClick>,
 	 * set one quantity in productQuantities
 	 */
 	const setProductQuantity = (_id, quantity) => {
@@ -184,6 +150,45 @@ export default function GrociariesAppContainer() {
 			setCartItems(newCartItems);
 		} else {
 			setItemQuantity(_id, quantity);
+		}
+	};
+
+	/**
+	 * handler for ProductCard \<Button onClick> (Edit),
+	 * used to fill the product form with a product to edit
+	 */
+	const fetchProduct = async (_id) => {
+		try {
+			const response = await axios.get(baseURL + productsPath + _id);
+			setProductForm(() => {
+				const { _id, ...product } = response.data;
+				product.price = product.price.replace("$", "");
+				return product; // this extracts _id since it isn't needed in the form
+			});
+			setEditing_id(response.data._id);
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	/**
+	 * handler for ProductCard \<Button onClick> (Delete),
+	 * deletes a product from the database
+	 */
+	const deleteProduct = async (_id) => {
+		try {
+			const response = await axios.delete(baseURL + productsPath + _id);
+
+			console.log(response.data.message);
+			/* removes the deleted product from productQuantities, this allows the
+			 * quantities to not be reset to 0 everytime a product is deleted */
+			setProductQuantities((prevState) =>
+				prevState.filter((product) => product._id !== response.data._id)
+			);
+			flipFetchControl();
+			removeFromCart(response.data._id);
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 
@@ -243,6 +248,7 @@ export default function GrociariesAppContainer() {
 					quantities={productQuantities}
 					setQuantity={setProductQuantity}
 					addToCart={addToCart}
+					editProduct={fetchProduct}
 					deleteProduct={deleteProduct}
 				/>
 				<CartContainer
