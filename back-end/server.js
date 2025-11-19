@@ -66,3 +66,14 @@ server.post(`/${productsPath}`, async (request, response) => {
 		response.status(500).send({ message: error.message });
 	}
 });
+
+// delete @ _id
+server.delete(`/${productsPath + _idParam}`, async (request, response) => {
+	const { _id } = request.params;
+	try {
+		await Product.findByIdAndDelete(_id);
+		response.status(200).send({ _id });
+	} catch (error) {
+		response.status(500).send({ message: error.message });
+	}
+});
